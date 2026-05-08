@@ -300,6 +300,7 @@ GameObject:
   - component: {fileID: 797939790}
   - component: {fileID: 797939792}
   - component: {fileID: 797939791}
+  - component: {fileID: 797939793}
   m_Layer: 5
   m_Name: HomePanel
   m_TagString: Untagged
@@ -367,6 +368,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 797939789}
   m_CullTransparentMesh: 1
+--- !u!114 &797939793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797939789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b559fa7a389f5b341b4b6e0893f60c2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelText: {fileID: 1042721566}
+  playButton: {fileID: 1745075673}
 --- !u!1 &1042721564
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,7 +416,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -17}
+  m_AnchoredPosition: {x: 0, y: 6}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1042721566
@@ -437,9 +452,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Level
-
-'
+  m_Text: Level
 --- !u!222 &1042721567
 CanvasRenderer:
   m_ObjectHideFlags: 0

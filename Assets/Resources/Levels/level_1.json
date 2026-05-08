@@ -1,0 +1,119 @@
+{
+  "level": 1,
+  "trayCapacity": 7,
+  "tiles": [
+    {
+      "id": "apple",
+      "x": -3,
+      "y": 2,
+      "layer": 0
+    },
+    {
+      "id": "apple",
+      "x": -1,
+      "y": 2,
+      "layer": 0
+    },
+    {
+      "id": "apple",
+      "x": 1,
+      "y": 2,
+      "layer": 0
+    },
+
+    {
+      "id": "orange",
+      "x": 3,
+      "y": 2,
+      "layer": 0
+    },
+    {
+      "id": "orange",
+      "x": -3,
+      "y": 0,
+      "layer": 0
+    },
+    {
+      "id": "orange",
+      "x": -1,
+      "y": 0,
+      "layer": 0
+    },
+
+    {
+      "id": "strawberry",
+      "x": 1,
+      "y": 0,
+      "layer": 0
+    },
+    {
+      "id": "strawberry",
+      "x": 3,
+      "y": 0,
+      "layer": 0
+    },
+    {
+      "id": "strawberry",
+      "x": 0,
+      "y": -2,
+      "layer": 0
+    },
+
+    {
+      "id": "watermelon",
+      "x": -2,
+      "y": 1,
+      "layer": 1
+    },
+    {
+      "id": "watermelon",
+      "x": 0,
+      "y": 1,
+      "layer": 1
+    },
+    {
+      "id": "watermelon",
+      "x": 2,
+      "y": 1,
+      "layer": 1
+    },
+
+    {
+      "id": "blueberry",
+      "x": -1,
+      "y": -1,
+      "layer": 1
+    },
+    {
+      "id": "blueberry",
+      "x": 1,
+      "y": -1,
+      "layer": 1
+    },
+    {
+      "id": "blueberry",
+      "x": 3,
+      "y": -1,
+      "layer": 1
+    },
+
+    {
+      "id": "mango",
+      "x": -1,
+      "y": 0.5,
+      "layer": 2
+    },
+    {
+      "id": "mango",
+      "x": 1,
+      "y": 0.5,
+      "layer": 2
+    },
+    {
+      "id": "mango",
+      "x": 0,
+      "y": -0.5,
+      "layer": 2
+    }
+  ]
+}
