@@ -7,11 +7,7 @@ public class GameplayUI : MonoBehaviour
 {
     [Header("Top Bar")]
     [SerializeField] private Text levelText;
-    [SerializeField] private Text progressText;
     [SerializeField] private Button homeButton;
-
-    [Header("Messages")]
-    [SerializeField] private Text invalidSelectionText;
 
     [Header("Panels")]
     [SerializeField] private GameObject winPanel;
@@ -25,17 +21,10 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private Button replayButton;
     [SerializeField] private Button failHomeButton;
 
-    private int invalidMessageNonce = 0;
-
     private void Awake()
     {
         winPanel.SetActive(false);
         failPanel.SetActive(false);
-
-        if (invalidSelectionText != null)
-        {
-            invalidSelectionText.gameObject.SetActive(false);
-        }
 
         homeButton.onClick.AddListener(OnHomeClicked);
         continueButton.onClick.AddListener(OnContinueClicked);
@@ -56,33 +45,6 @@ public class GameplayUI : MonoBehaviour
     public void SetLevelText(int level)
     {
         levelText.text = $"Level {level}";
-    }
-
-    public void SetProgress(int remainingTiles, int totalTiles)
-    {
-        progressText.text = $"Tiles Left: {remainingTiles}";
-    }
-
-    public void ShowInvalidSelectionMessage()
-    {
-        if (invalidSelectionText == null)
-            return;
-
-        invalidMessageNonce++;
-        _ = InvalidMessageRoutine(invalidMessageNonce);
-    }
-
-    private async Task InvalidMessageRoutine(int nonce)
-    {
-        invalidSelectionText.gameObject.SetActive(true);
-        invalidSelectionText.text = "This tile is blocked!";
-
-        await Task.Delay(800);
-
-        if (invalidMessageNonce == nonce && invalidSelectionText != null)
-        {
-            invalidSelectionText.gameObject.SetActive(false);
-        }
     }
 
     public void ShowWinPanel()

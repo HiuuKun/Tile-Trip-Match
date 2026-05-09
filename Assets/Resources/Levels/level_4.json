@@ -1,0 +1,115 @@
+{
+  "level": 4,
+  "trayCapacity": 7,
+  "scale": 0.8,
+  "tiles": [
+    {
+      "id": "dragon_fruit",
+      "gridX": -2,
+      "gridY": 2,
+      "layer": 0
+    },
+    {
+      "id": "dragon_fruit",
+      "gridX": 0,
+      "gridY": 2,
+      "layer": 0
+    },
+    {
+      "id": "blueberry",
+      "gridX": 2,
+      "gridY": 2,
+      "layer": 0
+    },
+    {
+      "id": "rasberry",
+      "gridX": -2,
+      "gridY": -2,
+      "layer": 0
+    },
+    {
+      "id": "rasberry",
+      "gridX": 0,
+      "gridY": -2,
+      "layer": 0
+    },
+    {
+      "id": "rasberry",
+      "gridX": 2,
+      "gridY": -2,
+      "layer": 0
+    },
+    {
+      "id": "apple",
+      "gridX": -3,
+      "gridY": 0,
+      "layer": 0
+    },
+    {
+      "id": "apple",
+      "gridX": -1,
+      "gridY": 0,
+      "layer": 0
+    },
+    {
+      "id": "apple",
+      "gridX": 1,
+      "gridY": 0,
+      "layer": 0
+    },
+    {
+      "id": "orange",
+      "gridX": 3,
+      "gridY": 0,
+      "layer": 0
+    },
+    {
+      "id": "orange",
+      "gridX": 0,
+      "gridY": 0,
+      "layer": 3
+    },
+    {
+      "id": "orange",
+      "gridX": 3,
+      "gridY": 3,
+      "layer": 1
+    },
+    {
+      "id": "dragon_fruit",
+      "gridX": -1,
+      "gridY": 1,
+      "layer": 1
+    },
+    {
+      "id": "blueberry",
+      "gridX": 1,
+      "gridY": 1,
+      "layer": 1
+    },
+    {
+      "id": "blueberry",
+      "gridX": 0,
+      "gridY": 1,
+      "layer": 2
+    },
+    {
+      "id": "strawberry",
+      "gridX": -1,
+      "gridY": -1,
+      "layer": 1
+    },
+    {
+      "id": "strawberry",
+      "gridX": 1,
+      "gridY": -2,
+      "layer": 1
+    },
+    {
+      "id": "strawberry",
+      "gridX": 0,
+      "gridY": -1,
+      "layer": 2
+    }
+  ]
+}

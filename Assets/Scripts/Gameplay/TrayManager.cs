@@ -6,8 +6,10 @@ using UnityEngine;
 
 public class TrayManager : MonoBehaviour
 {
-    [Header("Tray Slots")]
-    [SerializeField] private Transform[] traySlots;
+    [Header("References")]
+    [SerializeField] private Transform trayParent;
+
+    private Transform[] traySlots;
 
     [Header("Movement")]
     [SerializeField] private float moveDuration = 0.25f;
@@ -21,6 +23,23 @@ public class TrayManager : MonoBehaviour
 
     private void Awake()
     {
+        InitializeSlots();
+    }
+
+    private void InitializeSlots()
+    {
+        if (trayParent == null)
+        {
+            Debug.LogError("TrayParent is not assigned in TrayManager.");
+            return;
+        }
+
+        traySlots = new Transform[trayParent.childCount];
+        for (int i = 0; i < trayParent.childCount; i++)
+        {
+            traySlots[i] = trayParent.GetChild(i);
+        }
+
         currentCapacity = traySlots.Length;
     }
 
@@ -44,8 +63,11 @@ public class TrayManager : MonoBehaviour
 
     public async Task AddTile(Tile tile)
     {
-        int insertIndex = GetInsertIndex(tile.TileId);
+        if (tile == null) return;
 
+        tile.transform.SetParent(trayParent);
+
+        int insertIndex = GetInsertIndex(tile.TileId);
         tilesInTray.Insert(insertIndex, tile);
 
         await MoveAllTilesToSlots();
@@ -108,8 +130,10 @@ public class TrayManager : MonoBehaviour
                 break;
 
             Tile tile = tilesInTray[i];
+            
+            tile.BringToFront(i);
 
-            Task task = tile.MoveTo(traySlots[i].position, moveDuration);
+            Task task = tile.MoveTo(traySlots[i].position, moveDuration, traySlots[i].localScale);
 
             tasks.Add(task);
         }

@@ -1,0 +1,151 @@
+{
+  "level": 6,
+  "trayCapacity": 7,
+  "scale": 0.7,
+  "tiles": [
+    {
+      "id": "strawberry",
+      "gridX": -2,
+      "gridY": 0,
+      "layer": 0
+    },
+    {
+      "id": "apple",
+      "gridX": 0,
+      "gridY": 0,
+      "layer": 0
+    },
+    {
+      "id": "apple",
+      "gridX": 2,
+      "gridY": 0,
+      "layer": 0
+    },
+    {
+      "id": "orange",
+      "gridX": -2,
+      "gridY": 2,
+      "layer": 2
+    },
+    {
+      "id": "orange",
+      "gridX": 0,
+      "gridY": 2,
+      "layer": 0
+    },
+    {
+      "id": "orange",
+      "gridX": 2,
+      "gridY": 2,
+      "layer": 0
+    },
+    {
+      "id": "apple",
+      "gridX": -2,
+      "gridY": -2,
+      "layer": 8
+    },
+    {
+      "id": "strawberry",
+      "gridX": 0,
+      "gridY": -2,
+      "layer": 8
+    },
+    {
+      "id": "strawberry",
+      "gridX": 2,
+      "gridY": -2,
+      "layer": 4
+    },
+    {
+      "id": "pineapple",
+      "gridX": -4,
+      "gridY": 0,
+      "layer": 4
+    },
+    {
+      "id": "blueberry",
+      "gridX": -4,
+      "gridY": 2,
+      "layer": 4
+    },
+    {
+      "id": "blueberry",
+      "gridX": -4,
+      "gridY": -2,
+      "layer": 4
+    },
+    {
+      "id": "mango",
+      "gridX": 4,
+      "gridY": 0,
+      "layer": 0
+    },
+    {
+      "id": "watermelon",
+      "gridX": 4,
+      "gridY": 2,
+      "layer": 0
+    },
+    {
+      "id": "watermelon",
+      "gridX": 4,
+      "gridY": -2,
+      "layer": 0
+    },
+    {
+      "id": "dragon_fruit",
+      "gridX": -1,
+      "gridY": 1,
+      "layer": 1
+    },
+    {
+      "id": "dragon_fruit",
+      "gridX": 1,
+      "gridY": 1,
+      "layer": 1
+    },
+    {
+      "id": "dragon_fruit",
+      "gridX": 0,
+      "gridY": 1,
+      "layer": 2
+    },
+    {
+      "id": "watermelon",
+      "gridX": -1,
+      "gridY": -1,
+      "layer": 1
+    },
+    {
+      "id": "mango",
+      "gridX": 1,
+      "gridY": -1,
+      "layer": 1
+    },
+    {
+      "id": "mango",
+      "gridX": 0,
+      "gridY": -1,
+      "layer": 2
+    },
+    {
+      "id": "blueberry",
+      "gridX": -4,
+      "gridY": 1,
+      "layer": 0
+    },
+    {
+      "id": "pineapple",
+      "gridX": -3,
+      "gridY": -1,
+      "layer": 1
+    },
+    {
+      "id": "pineapple",
+      "gridX": -3,
+      "gridY": 0,
+      "layer": 2
+    }
+  ]
+}

@@ -10,6 +10,10 @@ public class TileBoard : MonoBehaviour
     [SerializeField] private TrayManager trayManager;
     [SerializeField] private GameplayUI gameplayUI;
 
+    [Header("Testing")]
+    [Tooltip("Set to > 0 to force load a specific level ignoring save data. Set to 0 to play normally.")]
+    [SerializeField] private int forceLoadLevel = 0;
+
     private readonly List<Tile> activeTiles = new();
 
     private bool isBusy;
@@ -24,7 +28,7 @@ public class TileBoard : MonoBehaviour
 
     private void LoadCurrentLevel()
     {
-        int currentLevel = SaveManager.CurrentLevel;
+        int currentLevel = forceLoadLevel > 0 ? forceLoadLevel : SaveManager.CurrentLevel;
 
         TextAsset levelAsset = Resources.Load<TextAsset>($"Levels/level_{currentLevel}");
 
@@ -69,7 +73,6 @@ public class TileBoard : MonoBehaviour
         initialTileCount = activeTiles.Count;
 
         UpdateBlockedStates();
-        UpdateProgressUI();
 
         Debug.Log($"Loaded level {levelData.level}. Spawned {activeTiles.Count} tiles.");
     }
@@ -135,11 +138,6 @@ public class TileBoard : MonoBehaviour
         );
 
         activeTiles.Add(tile);
-
-        Debug.Log(
-            $"Spawned {tileData.id} | grid=({tileData.gridX},{tileData.gridY}) " +
-            $"world=({position.x},{position.y}) layer={tileData.layer}"
-        );
     }
 
     private Vector3 GridToWorldPosition(int gridX, int gridY, int layer)
@@ -161,7 +159,6 @@ public class TileBoard : MonoBehaviour
 
         if (tile.IsBlocked)
         {
-            gameplayUI.ShowInvalidSelectionMessage();
             return;
         }
 
@@ -190,10 +187,8 @@ public class TileBoard : MonoBehaviour
         tile.MarkSelected();
         activeTiles.Remove(tile);
         UpdateBlockedStates();
-        UpdateProgressUI();
         await trayManager.AddTile(tile);
         UpdateBlockedStates();
-        UpdateProgressUI();
 
 
         if (activeTiles.Count == 0 && trayManager.Count == 0)
@@ -215,11 +210,6 @@ public class TileBoard : MonoBehaviour
         {
             int blockingCount = CountBlockingTiles(tile);
             tile.SetBlocked(blockingCount > 0, blockingCount);
-
-            Debug.Log(
-                $"{tile.TileId} grid=({tile.GridX},{tile.GridY}) layer={tile.Layer} " +
-                $"blockingCount={blockingCount}"
-            );
         }
     }
 
@@ -232,21 +222,14 @@ public class TileBoard : MonoBehaviour
             if (other == tile)
                 continue;
 
-            // Only higher layer tiles can block this tile.
             if (other.Layer <= tile.Layer)
                 continue;
 
             if (DoTilesOverlapByGridPosition(tile, other))
             {
                 count++;
-
-                Debug.Log(
-                    $"{other.TileId} layer {other.Layer} grid=({other.GridX},{other.GridY}) " +
-                    $"blocks {tile.TileId} layer {tile.Layer} grid=({tile.GridX},{tile.GridY})"
-                );
             }
         }
-
         return count;
     }
 
@@ -260,14 +243,6 @@ public class TileBoard : MonoBehaviour
             deltaY < GameConstants.TileGridBlockHeight;
 
         return overlaps;
-    }
-
-    private void UpdateProgressUI()
-    {
-        if (gameplayUI != null)
-        {
-            gameplayUI.SetProgress(activeTiles.Count, initialTileCount);
-        }
     }
 
     private void CompleteLevel()

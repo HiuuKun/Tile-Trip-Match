@@ -142,13 +142,34 @@ public class Tile : MonoBehaviour
     }
     private int CalculateSortingOrder(int visualOrder)
     {
+        int clampedY = Mathf.Clamp(GridY, -25, 25);
+        int clampedX = Mathf.Clamp(GridX, -12, 12);
 
-        int layerOrder = Layer * 1000;
-        int yOrder = (100 - GridY)*10;
-        int xOrder = GridX + 50;
+        int layerOrder = Layer * 2600;
+        int yOrder = (25 - clampedY) * 50;
+        int xOrder = (clampedX + 12) * 2;
 
         return layerOrder + yOrder + xOrder;
-}
+    }
+
+    public void BringToFront(int orderIndex)
+    {
+        int baseOrder = 32000 + (orderIndex * 2);
+
+        if (holderRenderer != null)
+        {
+            holderRenderer.sortingOrder = baseOrder;
+        }
+
+        if (symbolRenderer != null)
+        {
+            symbolRenderer.sortingOrder = baseOrder + 1;
+        }
+
+        Vector3 position = transform.position;
+        position.z = -5f;
+        transform.position = position;
+    }
 
     private void ApplyNormalVisual()
     {
@@ -159,6 +180,8 @@ public class Tile : MonoBehaviour
     {
         if (IsSelected)
             return;
+
+        Debug.Log($"Clicked tile {TileId} at GridX: {GridX}, GridY: {GridY}, Layer: {Layer}");
 
         if (board == null)
         {
@@ -204,11 +227,11 @@ public class Tile : MonoBehaviour
         SetRenderersTint(normalTint);
     }
 
-    public async Task MoveTo(Vector3 targetPosition, float duration)
+    public async Task MoveTo(Vector3 targetPosition, float duration, Vector3? targetScale = null)
     {
         Vector3 startPosition = transform.position;
         Vector3 startScale = transform.localScale;
-        Vector3 targetScale = new Vector3(GameConstants.TileWidth, GameConstants.TileHeight, 1f);
+        Vector3 finalScale = targetScale ?? new Vector3(GameConstants.TileWidth, GameConstants.TileHeight, 1f);
         
         float elapsed = 0f;
 
@@ -220,13 +243,13 @@ public class Tile : MonoBehaviour
             t = Mathf.SmoothStep(0f, 1f, t);
 
             transform.position = Vector3.Lerp(startPosition, targetPosition, t);
-            transform.localScale = Vector3.Lerp(startScale, targetScale, t);
+            transform.localScale = Vector3.Lerp(startScale, finalScale, t);
 
             await Task.Yield();
         }
 
         transform.position = targetPosition;
-        transform.localScale = targetScale;
+        transform.localScale = finalScale;
     }
 
 

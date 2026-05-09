@@ -1,0 +1,133 @@
+{
+  "level": 5,
+  "trayCapacity": 6,
+  "scale": 0.6,
+  "tiles": [
+    {
+      "id": "coconut",
+      "gridX": -4,
+      "gridY": 0,
+      "layer": 0
+    },
+    {
+      "id": "coconut",
+      "gridX": -2,
+      "gridY": 0,
+      "layer": 0
+    },
+    {
+      "id": "coconut",
+      "gridX": 0,
+      "gridY": 0,
+      "layer": 0
+    },
+    {
+      "id": "carrot",
+      "gridX": 2,
+      "gridY": 0,
+      "layer": 2
+    },
+    {
+      "id": "carrot",
+      "gridX": 4,
+      "gridY": 0,
+      "layer": 2
+    },
+    {
+      "id": "carrot",
+      "gridX": -3,
+      "gridY": -3,
+      "layer": 1
+    },
+    {
+      "id": "mango",
+      "gridX": -2,
+      "gridY": 2,
+      "layer": 0
+    },
+    {
+      "id": "mango",
+      "gridX": -4,
+      "gridY": 2,
+      "layer": 0
+    },
+    {
+      "id": "mango",
+      "gridX": 3,
+      "gridY": 3,
+      "layer": 1
+    },
+    {
+      "id": "onion",
+      "gridX": 5,
+      "gridY": 3,
+      "layer": 1
+    },
+    {
+      "id": "onion",
+      "gridX": -4,
+      "gridY": -2,
+      "layer": 2
+    },
+    {
+      "id": "onion",
+      "gridX": -2,
+      "gridY": -2,
+      "layer": 2
+    },
+    {
+      "id": "peach",
+      "gridX": 0,
+      "gridY": -2,
+      "layer": 2
+    },
+    {
+      "id": "peach",
+      "gridX": 2,
+      "gridY": -2,
+      "layer": 2
+    },
+    {
+      "id": "peach",
+      "gridX": 4,
+      "gridY": -2,
+      "layer": 2
+    },
+    {
+      "id": "pineapple",
+      "gridX": -3,
+      "gridY": 1,
+      "layer": 1
+    },
+    {
+      "id": "pineapple",
+      "gridX": -1,
+      "gridY": 1,
+      "layer": 1
+    },
+    {
+      "id": "pineapple",
+      "gridX": 1,
+      "gridY": 1,
+      "layer": 1
+    },
+    {
+      "id": "avocado",
+      "gridX": 3,
+      "gridY": 1,
+      "layer": 1
+    },
+    {
+      "id": "avocado",
+      "gridX": -3,
+      "gridY": -1,
+      "layer": 1
+    },
+    {
+      "id": "avocado",
+      "gridX": -1,
+      "gridY": -1,
+      "layer": 1
+    }
+  ]
+}

@@ -1,0 +1,223 @@
+{
+  "level": 8,
+  "trayCapacity": 7,
+  "scale": 0.6,
+  "tiles": [
+    {
+      "id": "carrot",
+      "gridX": -4,
+      "gridY": 2,
+      "layer": 0
+    },
+    {
+      "id": "apple",
+      "gridX": -2,
+      "gridY": 2,
+      "layer": 0
+    },
+    {
+      "id": "apple",
+      "gridX": 0,
+      "gridY": 2,
+      "layer": 0
+    },
+    {
+      "id": "avocado",
+      "gridX": 2,
+      "gridY": 2,
+      "layer": 0
+    },
+    {
+      "id": "orange",
+      "gridX": 4,
+      "gridY": 2,
+      "layer": 0
+    },
+    {
+      "id": "orange",
+      "gridX": -4,
+      "gridY": 0,
+      "layer": 0
+    },
+    {
+      "id": "apple",
+      "gridX": -2,
+      "gridY": 0,
+      "layer": 0
+    },
+    {
+      "id": "strawberry",
+      "gridX": 0,
+      "gridY": 0,
+      "layer": 0
+    },
+    {
+      "id": "strawberry",
+      "gridX": 2,
+      "gridY": 0,
+      "layer": 0
+    },
+    {
+      "id": "carrot",
+      "gridX": 4,
+      "gridY": 0,
+      "layer": 0
+    },
+    {
+      "id": "blueberry",
+      "gridX": -4,
+      "gridY": -2,
+      "layer": 0
+    },
+    {
+      "id": "blueberry",
+      "gridX": -2,
+      "gridY": -2,
+      "layer": 0
+    },
+    {
+      "id": "apple",
+      "gridX": 0,
+      "gridY": -2,
+      "layer": 0
+    },
+    {
+      "id": "watermelon",
+      "gridX": 2,
+      "gridY": -2,
+      "layer": 0
+    },
+    {
+      "id": "watermelon",
+      "gridX": 4,
+      "gridY": -2,
+      "layer": 0
+    },
+    {
+      "id": "coconut",
+      "gridX": -3,
+      "gridY": 1,
+      "layer": 1
+    },
+    {
+      "id": "mango",
+      "gridX": -1,
+      "gridY": 1,
+      "layer": 1
+    },
+    {
+      "id": "mango",
+      "gridX": 1,
+      "gridY": 1,
+      "layer": 1
+    },
+    {
+      "id": "pineapple",
+      "gridX": 3,
+      "gridY": 1,
+      "layer": 1
+    },
+    {
+      "id": "pineapple",
+      "gridX": -3,
+      "gridY": -1,
+      "layer": 1
+    },
+    {
+      "id": "pineapple",
+      "gridX": -1,
+      "gridY": -1,
+      "layer": 1
+    },
+    {
+      "id": "peach",
+      "gridX": 1,
+      "gridY": -1,
+      "layer": 1
+    },
+    {
+      "id": "peach",
+      "gridX": 3,
+      "gridY": -1,
+      "layer": 1
+    },
+    {
+      "id": "peach",
+      "gridX": 0,
+      "gridY": 0,
+      "layer": 2
+    },
+    {
+      "id": "orange",
+      "gridX": -2,
+      "gridY": 0,
+      "layer": 2
+    },
+    {
+      "id": "avocado",
+      "gridX": 2,
+      "gridY": 0,
+      "layer": 2
+    },
+    {
+      "id": "avocado",
+      "gridX": 0,
+      "gridY": -4,
+      "layer": 2
+    },
+    {
+      "id": "watermelon",
+      "gridX": -2,
+      "gridY": 2,
+      "layer": 2
+    },
+    {
+      "id": "coconut",
+      "gridX": 2,
+      "gridY": 2,
+      "layer": 2
+    },
+    {
+      "id": "coconut",
+      "gridX": 0,
+      "gridY": 2,
+      "layer": 2
+    },
+    {
+      "id": "blueberry",
+      "gridX": -2,
+      "gridY": -2,
+      "layer": 2
+    },
+    {
+      "id": "apple",
+      "gridX": 2,
+      "gridY": -2,
+      "layer": 2
+    },
+    {
+      "id": "carrot",
+      "gridX": 0,
+      "gridY": -2,
+      "layer": 2
+    },
+    {
+      "id": "mango",
+      "gridX": 0,
+      "gridY": 4,
+      "layer": 2
+    },
+    {
+      "id": "apple",
+      "gridX": 2,
+      "gridY": 4,
+      "layer": 2
+    },
+    {
+      "id": "strawberry",
+      "gridX": -2,
+      "gridY": 4,
+      "layer": 2
+    }
+  ]
+}

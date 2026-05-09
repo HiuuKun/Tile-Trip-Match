@@ -1,61 +1,22 @@
 {
-    "level": 3,
-    "trayCapacity": 7,
-    "scale": 1,
-    "tiles": [
-        {
-            "id": "apple",
-            "gridX": -2,
-            "gridY": 0,
-            "layer": 0
-        },
-        {
-            "id": "orange",
-            "gridX": 0,
-            "gridY": 0,
-            "layer": 0
-        },
-        {
-            "id": "orange",
-            "gridX": 2,
-            "gridY": 0,
-            "layer": 0
-        },
-        {
-            "id": "apple",
-            "gridX": -1,
-            "gridY": -1,
-            "layer": 1
-        },
-        {
-            "id": "orange",
-            "gridX": 1,
-            "gridY": -1,
-            "layer": 1
-        },
-        {
-            "id": "blueberry",
-            "gridX": -2,
-            "gridY": -3,
-            "layer": 1
-        },
-        {
-            "id": "apple",
-            "gridX": 0,
-            "gridY": -3,
-            "layer": 1
-        },
-        {
-            "id": "blueberry",
-            "gridX": 1,
-            "gridY": 1,
-            "layer": 1
-        },
-        {
-            "id": "blueberry",
-            "gridX": -1,
-            "gridY": 1,
-            "layer": 1
-        }
-    ]
+  "level": 3,
+  "trayCapacity": 3,
+  "scale": 0.85,
+  "tiles": [
+    { "id": "mango", "gridX": -3, "gridY": 0, "layer": 0 },
+    { "id": "mango", "gridX": -1, "gridY": 0, "layer": 0 },
+    { "id": "mango", "gridX": 1, "gridY": 0, "layer": 0 },
+    { "id": "onion", "gridX": 3, "gridY": 0, "layer": 0 },
+    { "id": "onion", "gridX": -3, "gridY": 2, "layer": 0 },
+    { "id": "onion", "gridX": -1, "gridY": 2, "layer": 0 },
+    { "id": "peach", "gridX": 1, "gridY": 2, "layer": 0 },
+    { "id": "peach", "gridX": 3, "gridY": 2, "layer": 0 },
+    { "id": "peach", "gridX": -3, "gridY": -2, "layer": 0 },
+    { "id": "pineapple", "gridX": -1, "gridY": -2, "layer": 0 },
+    { "id": "pineapple", "gridX": 1, "gridY": -2, "layer": 0 },
+    { "id": "pineapple", "gridX": 3, "gridY": -2, "layer": 0 },
+    { "id": "watermelon", "gridX": 0, "gridY": 1, "layer": 1 },
+    { "id": "watermelon", "gridX": 2, "gridY": 1, "layer": 1 },
+    { "id": "watermelon", "gridX": -2, "gridY": 1, "layer": 1 }
+  ]
 }

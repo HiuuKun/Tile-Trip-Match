@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,25 +6,37 @@ public class LoadingUI : MonoBehaviour
 {
     [SerializeField] private Image progressBar;
 
-    private IEnumerator Start()
+    private async void Start()
     {
-        yield return LoadResourcesRoutine();
+        await LoadResourcesRoutine();
         SceneLoader.LoadHome();
     }
 
-    private IEnumerator LoadResourcesRoutine()
+    private async Task LoadResourcesRoutine()
     {
-        float progress = 0f;
+        progressBar.fillAmount = 0f;
 
-        while (progress < 1f)
+        await UpdateProgress(0f, 0.4f, 0.4f);
+
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Tiles");
+        TileDefinition[] defs = Resources.LoadAll<TileDefinition>("TileDefinitions");
+        
+        Debug.Log($"Preloaded {sprites.Length} sprites and {defs.Length} definitions.");
+
+        await UpdateProgress(0.4f, 1f, 0.4f);
+        
+        await Task.Delay(200);
+    }
+
+    private async Task UpdateProgress(float start, float end, float duration)
+    {
+        float elapsed = 0f;
+        while (elapsed < duration)
         {
-            progress += Time.deltaTime;
-            progressBar.fillAmount = progress;
-            yield return null;
+            elapsed += Time.deltaTime;
+            progressBar.fillAmount = Mathf.Lerp(start, end, elapsed / duration);
+            await Task.Yield();
         }
-
-        //Sprite[] loadedSprites = Resources.LoadAll<Sprite>("Tiles");
-
-        //Debug.Log($"Loaded tile sprites: {loadedSprites.Length}");
+        progressBar.fillAmount = end;
     }
 }
