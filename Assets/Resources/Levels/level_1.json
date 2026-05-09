@@ -1,6 +1,7 @@
 {
   "level": 1,
   "trayCapacity": 7,
+  "scale": 0.5,
   "tiles": [
     {
       "id": "apple",
@@ -32,7 +33,6 @@
       "gridY": -2,
       "layer": 0
     },
-
     {
       "id": "blueberry",
       "gridX": 0,
@@ -63,7 +63,6 @@
       "gridY": -1,
       "layer": 1
     },
-
     {
       "id": "watermelon",
       "gridX": 0,

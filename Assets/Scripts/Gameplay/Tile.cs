@@ -37,6 +37,7 @@ public class Tile : MonoBehaviour
         int gridY,
         int layer,
         int visualOrder,
+        float scale,
         TileBoard ownerBoard
     )
     {
@@ -56,7 +57,7 @@ public class Tile : MonoBehaviour
 
         ValidateReferences();
         ApplyDefinition();
-        ApplySize();
+        ApplySize(scale);
         ApplyLayerVisual(visualOrder);
         ApplyNormalVisual();
     }
@@ -94,11 +95,11 @@ public class Tile : MonoBehaviour
         }
     }
 
-    private void ApplySize()
+    private void ApplySize(float scale)
     {
         transform.localScale = new Vector3(
-            GameConstants.TileWidth,
-            GameConstants.TileHeight,
+            GameConstants.TileWidth * scale,
+            GameConstants.TileHeight * scale,
             1f
         );
 
@@ -206,6 +207,9 @@ public class Tile : MonoBehaviour
     public async Task MoveTo(Vector3 targetPosition, float duration)
     {
         Vector3 startPosition = transform.position;
+        Vector3 startScale = transform.localScale;
+        Vector3 targetScale = new Vector3(GameConstants.TileWidth, GameConstants.TileHeight, 1f);
+        
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -216,11 +220,13 @@ public class Tile : MonoBehaviour
             t = Mathf.SmoothStep(0f, 1f, t);
 
             transform.position = Vector3.Lerp(startPosition, targetPosition, t);
+            transform.localScale = Vector3.Lerp(startScale, targetScale, t);
 
             await Task.Yield();
         }
 
         transform.position = targetPosition;
+        transform.localScale = targetScale;
     }
 
 

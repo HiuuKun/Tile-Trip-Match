@@ -1,6 +1,7 @@
 {
   "level": 2,
   "trayCapacity": 7,
+  "scale": 0.75,
   "tiles": [
     {
       "id": "apple",

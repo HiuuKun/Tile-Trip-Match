@@ -15,6 +15,7 @@ public class TileBoard : MonoBehaviour
     private bool isBusy;
     private bool isGameOver;
     private int initialTileCount;
+    private float currentLevelScale = 1f;
 
     private void Start()
     {
@@ -60,6 +61,8 @@ public class TileBoard : MonoBehaviour
         {
             trayManager.SetCapacity(levelData.trayCapacity);
         }
+
+        currentLevelScale = levelData.scale > 0f ? levelData.scale : 1f;
 
         SpawnTiles(levelData);
 
@@ -127,6 +130,7 @@ public class TileBoard : MonoBehaviour
             tileData.gridY,
             tileData.layer,
             visualOrder,
+            currentLevelScale,
             this
         );
 
@@ -141,8 +145,8 @@ public class TileBoard : MonoBehaviour
     private Vector3 GridToWorldPosition(int gridX, int gridY, int layer)
     {
         return new Vector3(
-            gridX * GameConstants.TileStepX,
-            gridY * GameConstants.TileStepY,
+            gridX * GameConstants.TileStepX * currentLevelScale,
+            gridY * GameConstants.TileStepY * currentLevelScale,
             -layer * 0.1f
         );
     }
