@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
@@ -8,19 +9,21 @@ public class Tile : MonoBehaviour
     [SerializeField] private SpriteRenderer holderRenderer;
     [SerializeField] private SpriteRenderer symbolRenderer;
 
-    [Header("Optional Visual Settings")]
-    [SerializeField] private Color blockedTint = new Color(0.45f, 0.45f, 0.45f, 1f);
+    [Header("Visual Settings")]
     [SerializeField] private Color normalTint = Color.white;
-    [SerializeField] private float symbolScale = 0.75f;
+    [SerializeField] private Color blockedTint = new Color(0.45f, 0.45f, 0.45f, 1f);
+
 
     public TileDefinition Definition { get; private set; }
 
     public string TileId => Definition != null ? Definition.id : string.Empty;
 
+    public int GridX { get; private set; }
+    public int GridY { get; private set; }
+
     public int Layer { get; private set; }
 
     public bool IsSelected { get; private set; }
-
     public bool IsBlocked { get; private set; }
 
     public int BlockingCount { get; private set; }
@@ -28,9 +31,20 @@ public class Tile : MonoBehaviour
     private TileBoard board;
     private BoxCollider2D boxCollider;
 
-    public void Initialize(TileDefinition definition, int layer, int visualOrder, TileBoard ownerBoard)
+    public void Initialize(
+        TileDefinition definition,
+        int gridX,
+        int gridY,
+        int layer,
+        int visualOrder,
+        TileBoard ownerBoard
+    )
     {
         Definition = definition;
+
+        GridX = gridX;
+        GridY = gridY;
+
         Layer = layer;
         board = ownerBoard;
 
@@ -82,31 +96,17 @@ public class Tile : MonoBehaviour
 
     private void ApplySize()
     {
-        // Tile gameplay size is always 2x2.
-        boxCollider.size = new Vector2(GameConstants.TileWidth, GameConstants.TileHeight);
-        boxCollider.offset = Vector2.zero;
+        transform.localScale = new Vector3(
+            GameConstants.TileWidth,
+            GameConstants.TileHeight,
+            1f
+        );
 
-        // Holder should fill the full 2x2 tile area.
-        if (holderRenderer != null && holderRenderer.sprite != null)
+        if (boxCollider != null)
         {
-            ScaleRendererToSize(
-                holderRenderer,
-                GameConstants.TileWidth,
-                GameConstants.TileHeight
-            );
+            boxCollider.offset = Vector2.zero;
         }
 
-        // Symbol should be slightly smaller than the holder.
-        if (symbolRenderer != null && symbolRenderer.sprite != null)
-        {
-            ScaleRendererToSize(
-                symbolRenderer,
-                GameConstants.TileWidth * symbolScale,
-                GameConstants.TileHeight * symbolScale
-            );
-        }
-
-        // Keep children centered.
         if (holderRenderer != null)
         {
             holderRenderer.transform.localPosition = Vector3.zero;
@@ -118,25 +118,10 @@ public class Tile : MonoBehaviour
         }
     }
 
-    private void ScaleRendererToSize(SpriteRenderer renderer, float targetWidth, float targetHeight)
-    {
-        Vector2 spriteSize = renderer.sprite.bounds.size;
-
-        if (spriteSize.x <= 0f || spriteSize.y <= 0f)
-        {
-            Debug.LogWarning($"{renderer.name}: Invalid sprite size.");
-            return;
-        }
-
-        float scaleX = targetWidth / spriteSize.x;
-        float scaleY = targetHeight / spriteSize.y;
-
-        renderer.transform.localScale = new Vector3(scaleX, scaleY, 1f);
-    }
 
     private void ApplyLayerVisual(int visualOrder)
     {
-        int baseOrder = Layer * 100 + visualOrder * 2;
+        int baseOrder = CalculateSortingOrder(visualOrder);
 
         if (holderRenderer != null)
         {
@@ -154,6 +139,15 @@ public class Tile : MonoBehaviour
         position.z = -Layer * 0.1f;
         transform.position = position;
     }
+    private int CalculateSortingOrder(int visualOrder)
+    {
+
+        int layerOrder = Layer * 1000;
+        int yOrder = (100 - GridY)*10;
+        int xOrder = GridX + 50;
+
+        return layerOrder + yOrder + xOrder;
+}
 
     private void ApplyNormalVisual()
     {
@@ -172,19 +166,6 @@ public class Tile : MonoBehaviour
         }
 
         board.TrySelectTile(this);
-    }
-
-    public Bounds GetBoardBounds()
-    {
-        Vector3 center = transform.position;
-
-        Vector3 size = new Vector3(
-            GameConstants.TileWidth,
-            GameConstants.TileHeight,
-            0.1f
-        );
-
-        return new Bounds(center, size);
     }
 
     public void SetBlocked(bool blocked, int blockingCount)
@@ -222,7 +203,7 @@ public class Tile : MonoBehaviour
         SetRenderersTint(normalTint);
     }
 
-    public IEnumerator MoveTo(Vector3 targetPosition, float duration)
+    public async Task MoveTo(Vector3 targetPosition, float duration)
     {
         Vector3 startPosition = transform.position;
         float elapsed = 0f;
@@ -236,29 +217,14 @@ public class Tile : MonoBehaviour
 
             transform.position = Vector3.Lerp(startPosition, targetPosition, t);
 
-            yield return null;
+            await Task.Yield();
         }
 
         transform.position = targetPosition;
     }
 
-    public IEnumerator InvalidSelectionFeedback()
-    {
-        Vector3 originalPosition = transform.position;
 
-        for (int i = 0; i < 2; i++)
-        {
-            transform.position = originalPosition + Vector3.right * 0.08f;
-            yield return new WaitForSeconds(0.05f);
-
-            transform.position = originalPosition + Vector3.left * 0.08f;
-            yield return new WaitForSeconds(0.05f);
-        }
-
-        transform.position = originalPosition;
-    }
-
-    public IEnumerator RemoveVisual()
+    public async Task RemoveVisual()
     {
         Vector3 startScale = transform.localScale;
         float duration = 0.2f;
@@ -271,7 +237,7 @@ public class Tile : MonoBehaviour
             float t = Mathf.Clamp01(elapsed / duration);
             transform.localScale = Vector3.Lerp(startScale, Vector3.zero, t);
 
-            yield return null;
+            await Task.Yield();
         }
 
         Destroy(gameObject);

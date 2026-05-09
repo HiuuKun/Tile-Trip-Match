@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class TrayManager : MonoBehaviour
@@ -13,26 +14,45 @@ public class TrayManager : MonoBehaviour
 
     private readonly List<Tile> tilesInTray = new();
 
-    public int Capacity => traySlots.Length;
+    private int currentCapacity;
+    public int Capacity => currentCapacity;
     public int Count => tilesInTray.Count;
     public bool IsFull => tilesInTray.Count >= Capacity;
+
+    private void Awake()
+    {
+        currentCapacity = traySlots.Length;
+    }
+
+    public void SetCapacity(int capacity)
+    {
+        currentCapacity = Mathf.Clamp(capacity, 0, traySlots.Length);
+
+        for (int i = 0; i < traySlots.Length; i++)
+        {
+            if (traySlots[i] != null)
+            {
+                traySlots[i].gameObject.SetActive(i < currentCapacity);
+            }
+        }
+    }
 
     public bool CanAddTile()
     {
         return tilesInTray.Count < Capacity;
     }
 
-    public IEnumerator AddTile(Tile tile)
+    public async Task AddTile(Tile tile)
     {
         int insertIndex = GetInsertIndex(tile.TileId);
 
         tilesInTray.Insert(insertIndex, tile);
 
-        yield return MoveAllTilesToSlots();
+        await MoveAllTilesToSlots();
 
-        yield return ResolveMatch(tile.TileId);
+        await ResolveMatch(tile.TileId);
 
-        yield return MoveAllTilesToSlots();
+        await MoveAllTilesToSlots();
     }
 
     private int GetInsertIndex(string tileId)
@@ -55,16 +75,16 @@ public class TrayManager : MonoBehaviour
         return tilesInTray.Count;
     }
 
-    private IEnumerator ResolveMatch(string tileId)
+    private async Task ResolveMatch(string tileId)
     {
-        List<Tile> matches = tilesInTray
-            .Where(tile => tile.TileId == tileId)
-            .Take(3)
-            .ToList();
+        List<Tile> matches = tilesInTray.Where(tile => tile.TileId == tileId).Take(3).ToList();
 
         if (matches.Count < 3)
-            yield break;
-
+            return;
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayMatch();
+        }
         foreach (Tile match in matches)
         {
             tilesInTray.Remove(match);
@@ -72,30 +92,28 @@ public class TrayManager : MonoBehaviour
 
         foreach (Tile match in matches)
         {
-            StartCoroutine(match.RemoveVisual());
+            _ = match.RemoveVisual();
         }
 
-        yield return new WaitForSeconds(0.25f);
+        await Task.Delay(250);
     }
 
-    private IEnumerator MoveAllTilesToSlots()
+    private async Task MoveAllTilesToSlots()
     {
-        List<Coroutine> coroutines = new();
+        List<Task> tasks = new();
 
         for (int i = 0; i < tilesInTray.Count; i++)
         {
+            if (i >= traySlots.Length)
+                break;
+
             Tile tile = tilesInTray[i];
 
-            Coroutine coroutine = StartCoroutine(
-                tile.MoveTo(traySlots[i].position, moveDuration)
-            );
+            Task task = tile.MoveTo(traySlots[i].position, moveDuration);
 
-            coroutines.Add(coroutine);
+            tasks.Add(task);
         }
 
-        foreach (Coroutine coroutine in coroutines)
-        {
-            yield return coroutine;
-        }
+        await Task.WhenAll(tasks);
     }
 }

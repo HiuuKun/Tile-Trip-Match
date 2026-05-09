@@ -13,7 +13,7 @@ public class LevelData
 public class TileData
 {
     public string id;
-    public float x;
-    public float y;
+    public int gridX;
+    public int gridY;
     public int layer;
 }

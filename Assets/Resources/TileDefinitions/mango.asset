@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: mango
   displayName: Mango
-  sprite: {fileID: 21300000, guid: 4e4b1dd99f3e0bd4e8934e792a600357, type: 3}
+  sprite: {fileID: 21300000, guid: 3109d509ccb5a8d44b9bc0ea574a2df5, type: 3}

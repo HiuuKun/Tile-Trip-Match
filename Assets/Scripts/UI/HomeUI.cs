@@ -19,6 +19,10 @@ public class HomeUI : MonoBehaviour
 
     private void OnPlayClicked()
     {
+        if(AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayTap();
+        }
         SceneLoader.LoadGameplay();
-    }
+    }   
 }

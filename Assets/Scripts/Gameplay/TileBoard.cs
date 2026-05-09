@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class TileBoard : MonoBehaviour
@@ -30,14 +30,36 @@ public class TileBoard : MonoBehaviour
         if (levelAsset == null)
         {
             Debug.LogWarning($"Level {currentLevel} not found. Loading level 1.");
+
             currentLevel = 1;
             SaveManager.CurrentLevel = 1;
+
             levelAsset = Resources.Load<TextAsset>("Levels/level_1");
+        }
+
+        if (levelAsset == null)
+        {
+            Debug.LogError("No level file found at Resources/Levels/level_1.");
+            return;
         }
 
         LevelData levelData = JsonUtility.FromJson<LevelData>(levelAsset.text);
 
-        gameplayUI.SetLevelText(levelData.level);
+        if (levelData == null || levelData.tiles == null)
+        {
+            Debug.LogError("Level data is invalid.");
+            return;
+        }
+
+        if (gameplayUI != null)
+        {
+            gameplayUI.SetLevelText(levelData.level);
+        }
+
+        if (trayManager != null)
+        {
+            trayManager.SetCapacity(levelData.trayCapacity);
+        }
 
         SpawnTiles(levelData);
 
@@ -45,6 +67,8 @@ public class TileBoard : MonoBehaviour
 
         UpdateBlockedStates();
         UpdateProgressUI();
+
+        Debug.Log($"Loaded level {levelData.level}. Spawned {activeTiles.Count} tiles.");
     }
 
     private void SpawnTiles(LevelData levelData)
@@ -57,11 +81,29 @@ public class TileBoard : MonoBehaviour
 
     private void SpawnTile(TileData tileData, int visualOrder)
     {
-        TileDefinition definition = Resources.Load<TileDefinition>($"TileDefinitions/{tileData.id}");
+        if (tileData == null)
+        {
+            Debug.LogError("TileData is null.");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(tileData.id))
+        {
+            Debug.LogError("TileData has an empty id.");
+            return;
+        }
+
+        string resourcePath = $"TileDefinitions/{tileData.id}";
+
+        TileDefinition definition = Resources.Load<TileDefinition>(resourcePath);
 
         if (definition == null)
         {
-            Debug.LogError($"Missing TileDefinition for tile id: {tileData.id}");
+            Debug.LogError(
+                $"Missing TileDefinition for tile id: {tileData.id}. " +
+                $"Expected path: Assets/Resources/{resourcePath}.asset"
+            );
+
             return;
         }
 
@@ -71,26 +113,57 @@ public class TileBoard : MonoBehaviour
             return;
         }
 
-        Vector3 position = new Vector3(
-            tileData.x,
-            tileData.y,
-            -tileData.layer * 0.1f
+        Vector3 position = GridToWorldPosition(
+            tileData.gridX,
+            tileData.gridY,
+            tileData.layer
         );
 
         Tile tile = Instantiate(tilePrefab, position, Quaternion.identity, transform);
 
-        tile.Initialize(definition, tileData.layer, visualOrder, this);
+        tile.Initialize(
+            definition,
+            tileData.gridX,
+            tileData.gridY,
+            tileData.layer,
+            visualOrder,
+            this
+        );
 
         activeTiles.Add(tile);
+
+        Debug.Log(
+            $"Spawned {tileData.id} | grid=({tileData.gridX},{tileData.gridY}) " +
+            $"world=({position.x},{position.y}) layer={tileData.layer}"
+        );
     }
+
+    private Vector3 GridToWorldPosition(int gridX, int gridY, int layer)
+    {
+        return new Vector3(
+            gridX * GameConstants.TileStepX,
+            gridY * GameConstants.TileStepY,
+            -layer * 0.1f
+        );
+    }
+
     public void TrySelectTile(Tile tile)
     {
         if (isGameOver || isBusy)
             return;
 
+        if (tile == null)
+            return;
+
         if (tile.IsBlocked)
         {
-            StartCoroutine(HandleInvalidTileSelection(tile));
+            gameplayUI.ShowInvalidSelectionMessage();
+            return;
+        }
+
+        if (trayManager == null)
+        {
+            Debug.LogWarning("TrayManager is not assigned. Tile selection ignored.");
             return;
         }
 
@@ -100,20 +173,24 @@ public class TileBoard : MonoBehaviour
             return;
         }
 
-        StartCoroutine(SelectTileRoutine(tile));
+        _ = SelectTileRoutine(tile);
     }
 
-    private IEnumerator SelectTileRoutine(Tile tile)
+    private async Task SelectTileRoutine(Tile tile)
     {
         isBusy = true;
-
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayTap();
+        }
         tile.MarkSelected();
         activeTiles.Remove(tile);
-
-        yield return trayManager.AddTile(tile);
-
         UpdateBlockedStates();
         UpdateProgressUI();
+        await trayManager.AddTile(tile);
+        UpdateBlockedStates();
+        UpdateProgressUI();
+
 
         if (activeTiles.Count == 0 && trayManager.Count == 0)
         {
@@ -127,11 +204,6 @@ public class TileBoard : MonoBehaviour
         isBusy = false;
     }
 
-    private IEnumerator HandleInvalidTileSelection(Tile tile)
-    {
-        gameplayUI.ShowInvalidSelectionMessage();
-        yield return tile.InvalidSelectionFeedback();
-    }
 
     private void UpdateBlockedStates()
     {
@@ -139,36 +211,59 @@ public class TileBoard : MonoBehaviour
         {
             int blockingCount = CountBlockingTiles(tile);
             tile.SetBlocked(blockingCount > 0, blockingCount);
+
+            Debug.Log(
+                $"{tile.TileId} grid=({tile.GridX},{tile.GridY}) layer={tile.Layer} " +
+                $"blockingCount={blockingCount}"
+            );
         }
     }
 
     private int CountBlockingTiles(Tile tile)
     {
         int count = 0;
-        Bounds tileBounds = tile.GetBoardBounds();
 
         foreach (Tile other in activeTiles)
         {
             if (other == tile)
                 continue;
 
+            // Only higher layer tiles can block this tile.
             if (other.Layer <= tile.Layer)
                 continue;
 
-            Bounds otherBounds = other.GetBoardBounds();
-
-            if (otherBounds.Intersects(tileBounds))
+            if (DoTilesOverlapByGridPosition(tile, other))
             {
                 count++;
+
+                Debug.Log(
+                    $"{other.TileId} layer {other.Layer} grid=({other.GridX},{other.GridY}) " +
+                    $"blocks {tile.TileId} layer {tile.Layer} grid=({tile.GridX},{tile.GridY})"
+                );
             }
         }
 
         return count;
     }
 
+    private bool DoTilesOverlapByGridPosition(Tile tileA, Tile tileB)
+    {
+        int deltaX = Mathf.Abs(tileA.GridX - tileB.GridX);
+        int deltaY = Mathf.Abs(tileA.GridY - tileB.GridY);
+
+        bool overlaps =
+            deltaX < GameConstants.TileGridBlockWidth &&
+            deltaY < GameConstants.TileGridBlockHeight;
+
+        return overlaps;
+    }
+
     private void UpdateProgressUI()
     {
-        gameplayUI.SetProgress(activeTiles.Count, initialTileCount);
+        if (gameplayUI != null)
+        {
+            gameplayUI.SetProgress(activeTiles.Count, initialTileCount);
+        }
     }
 
     private void CompleteLevel()
@@ -177,8 +272,15 @@ public class TileBoard : MonoBehaviour
             return;
 
         isGameOver = true;
+
         SaveManager.AdvanceLevel();
-        gameplayUI.ShowWinPanel();
+
+        if (gameplayUI != null)
+        {
+            gameplayUI.ShowWinPanel();
+        }
+
+        Debug.Log("Level complete.");
     }
 
     private void FailLevel()
@@ -187,6 +289,12 @@ public class TileBoard : MonoBehaviour
             return;
 
         isGameOver = true;
-        gameplayUI.ShowFailPanel();
+
+        if (gameplayUI != null)
+        {
+            gameplayUI.ShowFailPanel();
+        }
+
+        Debug.Log("Level failed.");
     }
 }

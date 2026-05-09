@@ -1,5 +1,5 @@
 {
-  "level": 1,
+  "level": 2,
   "trayCapacity": 7,
   "tiles": [
     {
@@ -32,64 +32,62 @@
       "gridY": -2,
       "layer": 0
     },
-
     {
-      "id": "blueberry",
+      "id": "orange",
       "gridX": 0,
       "gridY": 1,
       "layer": 1
     },
     {
-      "id": "apple",
+      "id": "strawberry",
       "gridX": -2,
       "gridY": 1,
       "layer": 1
     },
     {
-      "id": "orange",
+      "id": "watermelon",
       "gridX": 2,
       "gridY": 1,
       "layer": 1
     },
     {
-      "id": "strawberry",
+      "id": "blueberry",
       "gridX": 0,
       "gridY": 3,
       "layer": 1
     },
     {
-      "id": "watermelon",
+      "id": "apple",
       "gridX": 0,
       "gridY": -1,
       "layer": 1
     },
-
     {
-      "id": "watermelon",
+      "id": "strawberry",
       "gridX": 0,
       "gridY": 0,
       "layer": 2
     },
     {
-      "id": "blueberry",
+      "id": "watermelon",
       "gridX": -2,
       "gridY": 0,
       "layer": 2
     },
     {
-      "id": "apple",
+      "id": "blueberry",
       "gridX": 2,
       "gridY": 0,
       "layer": 2
     },
     {
-      "id": "orange",
+      "id": "apple",
       "gridX": 0,
       "gridY": 2,
       "layer": 2
     },
     {
-      "id": "strawberry",
+      "id": "orange",
       "gridX": 0,
       "gridY": -2,
       "layer": 2

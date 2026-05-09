@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,7 +25,7 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private Button replayButton;
     [SerializeField] private Button failHomeButton;
 
-    private Coroutine invalidMessageRoutine;
+    private int invalidMessageNonce = 0;
 
     private void Awake()
     {
@@ -67,22 +68,21 @@ public class GameplayUI : MonoBehaviour
         if (invalidSelectionText == null)
             return;
 
-        if (invalidMessageRoutine != null)
-        {
-            StopCoroutine(invalidMessageRoutine);
-        }
-
-        invalidMessageRoutine = StartCoroutine(InvalidMessageRoutine());
+        invalidMessageNonce++;
+        _ = InvalidMessageRoutine(invalidMessageNonce);
     }
 
-    private IEnumerator InvalidMessageRoutine()
+    private async Task InvalidMessageRoutine(int nonce)
     {
         invalidSelectionText.gameObject.SetActive(true);
         invalidSelectionText.text = "This tile is blocked!";
 
-        yield return new WaitForSeconds(0.8f);
+        await Task.Delay(800);
 
-        invalidSelectionText.gameObject.SetActive(false);
+        if (invalidMessageNonce == nonce && invalidSelectionText != null)
+        {
+            invalidSelectionText.gameObject.SetActive(false);
+        }
     }
 
     public void ShowWinPanel()
@@ -97,16 +97,29 @@ public class GameplayUI : MonoBehaviour
 
     private void OnContinueClicked()
     {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayTap();
+        }
+
         SceneLoader.LoadGameplay();
     }
 
     private void OnReplayClicked()
     {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayTap();
+        }
         SceneLoader.RestartGameplay();
     }
 
     private void OnHomeClicked()
     {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayTap();
+        }
         SceneLoader.LoadHome();
     }
 }
